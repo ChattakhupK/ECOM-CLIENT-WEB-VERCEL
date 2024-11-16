@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useEcomStore from "../store/ecom-store";
 import { ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
-
+import imgLogo from "../../public/OG.png";
 const MainNav = () => {
   const carts = useEcomStore((state) => state.carts);
   const user = useEcomStore((state) => state.user);
@@ -35,7 +35,7 @@ const MainNav = () => {
             <Link className="flex items-center flex-row" to={"/"}>
               <img
                 className="fill-current h-8 w-8"
-                src="../../public/OG.png"
+                src={imgLogo}
                 alt=""
               />
               <span className="hidden md:block font-semibold text-xl tracking-tight">
