@@ -11,13 +11,14 @@ const ProtectRouteAdmin = ({ element }) => {
   useEffect(() => {
     if (user && token) {
       //send to back
+
       currentAdmin(token)
         .then((res) => setOk(true))
         .catch((err) => setOk(false));
     }
   }, []);
 
-  return ok ? element : <LoadingToRedirect />
+  return ok ? element : <LoadingToRedirect />;
 };
 
 export default ProtectRouteAdmin;

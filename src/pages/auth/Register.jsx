@@ -22,6 +22,11 @@ const registerSchema = z
 
 const Register = () => {
   const [passwordScore, setPasswordScore] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const {
     register,
@@ -87,7 +92,10 @@ const Register = () => {
 
     //send to back
     try {
-      const res = await axios.post("https://ecom-server-api.vercel.app/api/register", data);
+      const res = await axios.post(
+        "https://ecom-server-api.vercel.app/api/register",
+        data
+      );
       console.log(res);
       toast.success(res.data, { position: "bottom-left", autoClose: 1500 });
       navigate("/login");
@@ -125,9 +133,9 @@ const Register = () => {
           <div>
             <span className="font-semibold">Password</span>
           </div>
-          <div>
+          <div className="flex items-center">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               className={`block w-full rounded-md border-0 py-1.5 pl-2 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 ${
                 errors.password && "bg-red-100"
               }`}
@@ -138,6 +146,13 @@ const Register = () => {
                 {errors.password.message}
               </p>
             )}
+                        <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="inline-flex w-20 left-96 top-[275px] right-2 px-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+            >
+              {showPassword ? "ซ่อน" : "แสดง"}
+            </button>
           </div>
           {watch().password?.length > 0 && (
             <div className="flex ">
@@ -162,7 +177,7 @@ const Register = () => {
           </div>
           <div>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               className={`block w-full rounded-md border-0 py-1.5 pl-2 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 ${
                 errors.confirmPassword && "bg-red-100"
               }`}

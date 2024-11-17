@@ -23,6 +23,15 @@ const Login = () => {
     });
   };
 
+
+  const roleRedirect = (role) => {
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate(-1);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -33,7 +42,7 @@ const Login = () => {
       });
       const role = res.data.payload.role;
       roleRedirect(role);
-      navigate('/')
+      // navigate('/')
     } catch (err) {
       console.log(err);
       const errMsg = err.response?.data?.message;
@@ -49,14 +58,6 @@ const Login = () => {
     //   toast.error(errMsg);
     //   console.log(err);
     // }
-  };
-
-  const roleRedirect = (role) => {
-    if (role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate(-1);
-    }
   };
 
   return (

@@ -26,18 +26,14 @@ const MainNav = () => {
     navigate("/");
   };
 
-  // console.log(carts.length);
+  // console.log(user.role);
   return (
     <div className="relative">
       <nav className="flex fixed z-50 top-0 right-0 left-0 items-center justify-between flex-wrap bg-black px-6 py-4">
         <div className="flex items-center">
           <div className="flex items-center flex-shrink-0 text-white mr-4">
             <Link className="flex items-center flex-row" to={"/"}>
-              <img
-                className="fill-current h-8 w-8"
-                src={imgLogo}
-                alt=""
-              />
+              <img className="fill-current h-8 w-8" src={imgLogo} alt="" />
               <span className="hidden md:block font-semibold text-xl tracking-tight">
                 COMDEE
               </span>
@@ -98,6 +94,14 @@ const MainNav = () => {
 
               {isOpen && (
                 <div className="absolute mt-8 md:mt-4 rounded-md right-[23px] border top-10 bg-white shadow-md">
+                  {user.role === "admin" && (
+                    <Link
+                      to={"/admin"}
+                      className="block px-3 py-2 text-black hover:text-white border-b rounded-t-md hover:bg-black  "
+                    >
+                      Admin
+                    </Link>
+                  )}
                   <Link
                     to={"/user/history"}
                     className="block px-3 py-2 text-black hover:text-white border-b rounded-t-md hover:bg-black  "

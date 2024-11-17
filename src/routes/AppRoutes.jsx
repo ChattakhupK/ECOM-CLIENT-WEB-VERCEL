@@ -61,7 +61,7 @@ const router = createBrowserRouter([
 
 const AppRoutes = () => {
   return (
-    <div className="mt-20">
+    <div className="">
       <RouterProvider router={router} />
     </div>
   );
