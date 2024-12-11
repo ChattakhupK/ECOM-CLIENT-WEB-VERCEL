@@ -14,15 +14,18 @@ const Payment = () => {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
-    payment(token)
-      .then((res) => {
-        console.log(res);
-        setClientSecret(res.data.clientSecret);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (token) {
+      const fetchPayment = async () => {
+        try {
+          const res = await payment(token);
+          setClientSecret(res.data.clientSecret);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchPayment();
+    }
+  }, [token]);
 
   const appearance = {
     theme: "stripe",
