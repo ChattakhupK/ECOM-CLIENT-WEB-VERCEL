@@ -9,6 +9,7 @@ import { saveOrder } from "../api/user";
 import useEcomStore from "../store/ecom-store";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 
 export default function CheckoutForm() {
   const token = useEcomStore((state) => state.token);
@@ -92,11 +93,7 @@ export default function CheckoutForm() {
           id="submit"
         >
           <span id="button-text">
-            {isLoading ? (
-              <div className="spinner" id="spinner"></div>
-            ) : (
-              "Pay now"
-            )}
+            {isLoading ? <LoaderCircle className="animate-spin" /> : "Pay now"}
           </span>
         </button>
         {/* Show any error or success messages */}

@@ -25,7 +25,7 @@ const Payment = () => {
   }, []);
 
   const appearance = {
-    theme: 'stripe',
+    theme: "stripe",
   };
   // Enable the skeleton loader UI for optimal loading.
   const loader = "auto";

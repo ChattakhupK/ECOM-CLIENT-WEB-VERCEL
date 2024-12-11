@@ -1,11 +1,12 @@
-import React from "react";
-import { List } from "lucide-react";
+import React, { useState } from "react";
+import { List, LoaderCircle } from "lucide-react";
 import useEcomStore from "../../store/ecom-store";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserCart } from "../../api/user";
 import { toast } from "react-toastify";
 import { numberFormat } from "../../utils/number";
 const ListCart = () => {
+  const [loading, setLoading] = useState(false);
   const cart = useEcomStore((state) => state.carts);
   const user = useEcomStore((state) => state.user);
   const getTotalPrice = useEcomStore((state) => state.getTotalPrice);
@@ -14,22 +15,24 @@ const ListCart = () => {
   const navigate = useNavigate();
 
   const handleSaveCart = async () => {
-    await createUserCart(token, { cart })
-      .then((res) => {
-        console.log(res);
-        toast.success("Order Success!!", {
-          position: "bottom-left",
-          autoClose: 1500,
-        });
-        navigate("/checkout");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.warning(err.response.data.message, {
-          position: "bottom-left",
-          autoClose: 1500,
-        });
+    setLoading(true);
+    try {
+      const res = await createUserCart(token, { cart });
+      console.log(res);
+      toast.success("order success!!", {
+        position: "bottom-left",
+        autoClose: 1500,
       });
+      navigate("/checkout");
+    } catch (err) {
+      console.log(err);
+      toast.warning(err.response.data.message, {
+        position: "bottom-left",
+        autoClose: 1500,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -91,7 +94,14 @@ const ListCart = () => {
                       : "bg-red-500 border text-white text-center py-2 rounded w-full hover:bg-red-700"
                   }
                 >
-                  Order
+                  {loading ? (
+                    <div className="flex justify-center items-center gap-2">
+                      <LoaderCircle className="animate-spin" />
+                      Processing...
+                    </div>
+                  ) : (
+                    "Order"
+                  )}
                 </button>
               </Link>
             ) : (

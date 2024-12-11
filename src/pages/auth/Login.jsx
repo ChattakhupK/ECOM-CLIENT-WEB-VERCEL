@@ -3,8 +3,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import useEcomStore from "../../store/ecom-store";
 import { useNavigate, Link } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const actionLogin = useEcomStore((state) => state.actionLogin);
   const user = useEcomStore((state) => state.user);
@@ -23,7 +25,6 @@ const Login = () => {
     });
   };
 
-
   const roleRedirect = (role) => {
     if (role === "admin") {
       navigate("/admin");
@@ -34,6 +35,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await actionLogin(form);
       toast.success("WELCOME TO MEECOM", {
@@ -47,6 +49,8 @@ const Login = () => {
       console.log(err);
       const errMsg = err.response?.data?.message;
       toast.error(errMsg, { position: "bottom-left", autoClose: 1500 });
+    } finally {
+      setLoading(false);
     }
     //send to back
     // try {
@@ -89,7 +93,13 @@ const Login = () => {
         <hr />
         <div>
           <button className="bg-blue-500 mr-4 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Login
+            {loading ? (
+              <div className="flex justify-center items-center gap-2">
+                <LoaderCircle className="animate-spin" />
+              </div>
+            ) : (
+              "Login"
+            )}
           </button>
           <Link to={"/register"} className="text-blue-500 hover:text-black">
             register

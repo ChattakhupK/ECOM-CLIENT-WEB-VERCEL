@@ -4,7 +4,10 @@ import useEcomStore from "../../store/ecom-store";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { numberFormat } from "../../utils/number";
+import { LoaderCircle } from "lucide-react";
 const SummaryCard = () => {
+  const [isLoadingSave, setIsLoadingSave] = useState(false);
+  const [isLoadingPay, setIsLoadingPay] = useState(false);
   const token = useEcomStore((state) => state.token);
   const [products, setProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
@@ -26,25 +29,28 @@ const SummaryCard = () => {
       });
   };
 
-  const handleSaveAddress = () => {
-    if (!address) {
-      return toast.warning("Please fill address", {
-        position: "bottom-left",
-        autoClose: 1500,
-      });
-    }
-    saveAddress(token, address)
-      .then((res) => {
-        console.log(res);
-        toast.success(res.data.message, {
+  const handleSaveAddress = async () => {
+    try {
+      setIsLoadingSave(true);
+      if (!address) {
+        return toast.warning("Please fill address", {
           position: "bottom-left",
           autoClose: 1500,
         });
-        setAddressSaved(true);
-      })
-      .catch((err) => {
-        console.log(err);
+      }
+      const res = await saveAddress(token, address);
+      console.log(res);
+      toast.success(res.data.message, {
+        position: "bottom-left",
+        autoClose: 1500,
       });
+      setIsLoadingSave(false);
+      setAddressSaved(true);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoadingSave(false);
+    }
   };
 
   useEffect(() => {
@@ -53,11 +59,18 @@ const SummaryCard = () => {
 
   // console.log(products);
 
-  const handleGoToPaymant = () => {
-    if (!addressSaved) {
-      return toast.warning("Please fill address");
+  const handleGoToPaymant = async () => {
+    try {
+      setIsLoadingPay(true);
+      if (!addressSaved) {
+        return toast.warning("Please fill address");
+      }
+      navigate("/user/payment");
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoadingPay(false);
     }
-    navigate("/user/payment");
   };
 
   return (
@@ -77,7 +90,11 @@ const SummaryCard = () => {
               onClick={handleSaveAddress}
               className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
             >
-              Save Address
+              {isLoadingSave ? (
+                <LoaderCircle className="animate-spin" />
+              ) : (
+                "Save Address"
+              )}
             </button>
           </div>
         </div>
@@ -134,7 +151,11 @@ const SummaryCard = () => {
                 // disabled={!addressSaved}
                 className="w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               >
-                Confirm Payment
+                {isLoadingPay ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  "Confirm Payment"
+                )}
               </button>
             </div>
           </div>
