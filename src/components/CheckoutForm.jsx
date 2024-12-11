@@ -93,7 +93,11 @@ export default function CheckoutForm() {
           id="submit"
         >
           <span id="button-text">
-            {isLoading ? <LoaderCircle className="animate-spin" /> : "Pay now"}
+            {isLoading ? (
+              <LoaderCircle className="mx-auto text-center animate-spin" />
+            ) : (
+              "Pay now"
+            )}
           </span>
         </button>
         {/* Show any error or success messages */}
