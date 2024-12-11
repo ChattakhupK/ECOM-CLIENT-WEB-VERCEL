@@ -55,6 +55,7 @@ export default function CheckoutForm() {
         .then((res) => {
           console.log(res);
           clearCart();
+          setIsLoading(false);
           toast.success("Payment Success!!", {
             position: "bottom-left",
             autoClose: 1500,
@@ -67,9 +68,8 @@ export default function CheckoutForm() {
     } else {
       console.log("something wrong!!!");
       toast.success("Payment Error!!");
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const paymentElementOptions = {
